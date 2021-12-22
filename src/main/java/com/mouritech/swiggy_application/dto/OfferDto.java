@@ -2,27 +2,25 @@ package com.mouritech.swiggy_application.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mouritech.swiggy_application.entity.Items;
+import com.mouritech.swiggy_application.entity.Offers;
 
-public class ItemDto {
+public class OfferDto {
 	@JsonIgnore
 	private long id;
 
-	private String itemName;
-
-	private int price;
+	private int offerValue;
 	@JsonIgnore
 	private String restaurentName;
 
 	private long restaurentId;
 
-	public ItemDto(Items items) {
-		this.setId(items.getId());
+	public OfferDto(Offers offers) {
+		this.setId(offers.getId());
 
-		this.setItemName(items.getItemName());
+		this.setOfferValue(offers.getOfferValue());
 
-		this.setPrice(items.getPrice());
-		this.setRestaurentName(items.getRestaurent().getRestaurentName());
-		this.setRestaurentId(items.getRestaurent().getId());
+		this.setRestaurentName(offers.getRestaurent().getRestaurentName());
+		this.setRestaurentId(offers.getRestaurent().getId());
 	}
 
 	public long getRestaurentId() {
@@ -33,21 +31,19 @@ public class ItemDto {
 		this.restaurentId = restaurentId;
 	}
 
-	public ItemDto(String itemName, int price, String restaurentName) {
+	public OfferDto(int offerValue, String restaurentName) {
 		super();
-		this.itemName = itemName;
-		this.price = price;
+		this.offerValue = offerValue;
 		this.restaurentName = restaurentName;
 	}
 
-	public ItemDto(String itemName, int price, long restaurentId) {
+	public OfferDto(int offerValue, long restaurentId) {
 		super();
-		this.itemName = itemName;
-		this.price = price;
+		this.offerValue = offerValue;
 		this.restaurentId = restaurentId;
 	}
 
-	public ItemDto() {
+	public OfferDto() {
 		// TODO Auto-generated constructor stub
 	}
 
@@ -59,20 +55,12 @@ public class ItemDto {
 		this.id = id;
 	}
 
-	public String getItemName() {
-		return itemName;
+	public int getOfferValue() {
+		return offerValue;
 	}
 
-	public void setItemName(String itemName) {
-		this.itemName = itemName;
-	}
-
-	public int getPrice() {
-		return price;
-	}
-
-	public void setPrice(int price) {
-		this.price = price;
+	public void setOfferValue(int offerValue) {
+		this.offerValue = offerValue;
 	}
 
 	public String getRestaurentName() {

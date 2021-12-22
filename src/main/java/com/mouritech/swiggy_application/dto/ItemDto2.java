@@ -3,19 +3,20 @@ package com.mouritech.swiggy_application.dto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mouritech.swiggy_application.entity.Items;
 
-public class ItemDto {
+public class ItemDto2 {
 	@JsonIgnore
 	private long id;
 
 	private String itemName;
 
 	private int price;
-	@JsonIgnore
-	private String restaurentName;
 
+	private String restaurentName;
+	//private int offerValue;
+	@JsonIgnore
 	private long restaurentId;
 
-	public ItemDto(Items items) {
+	public ItemDto2(Items items) {
 		this.setId(items.getId());
 
 		this.setItemName(items.getItemName());
@@ -33,21 +34,21 @@ public class ItemDto {
 		this.restaurentId = restaurentId;
 	}
 
-	public ItemDto(String itemName, int price, String restaurentName) {
+	public ItemDto2(String itemName, int price, String restaurentName) {
 		super();
 		this.itemName = itemName;
 		this.price = price;
 		this.restaurentName = restaurentName;
 	}
 
-	public ItemDto(String itemName, int price, long restaurentId) {
+	public ItemDto2(String itemName, int price, long restaurentId) {
 		super();
 		this.itemName = itemName;
 		this.price = price;
 		this.restaurentId = restaurentId;
 	}
 
-	public ItemDto() {
+	public ItemDto2() {
 		// TODO Auto-generated constructor stub
 	}
 
@@ -83,4 +84,5 @@ public class ItemDto {
 		this.restaurentName = restaurentName;
 	}
 
+	
 }

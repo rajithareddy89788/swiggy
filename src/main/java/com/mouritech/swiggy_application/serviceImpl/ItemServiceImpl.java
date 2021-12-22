@@ -3,13 +3,18 @@ package com.mouritech.swiggy_application.serviceImpl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mouritech.swiggy_application.dto.ItemDto;
+import com.mouritech.swiggy_application.dto.ItemDto2;
+import com.mouritech.swiggy_application.dto.RestaurentDto;
 import com.mouritech.swiggy_application.entity.Items;
 import com.mouritech.swiggy_application.entity.Restaurent;
+import com.mouritech.swiggy_application.entity.User;
 import com.mouritech.swiggy_application.exception.ResourceNotFoundException;
 import com.mouritech.swiggy_application.repository.ItemsRepository;
 import com.mouritech.swiggy_application.service.ItemService;
@@ -19,58 +24,61 @@ public class ItemServiceImpl implements ItemService {
 
 	@Autowired
 	private ItemsRepository itemsRepository;
-
-	@Override
-	public Items getItemsByItemName(String itemName) {
-		Optional<Items> result = itemsRepository.findByItemName(itemName);
-		if (result.isPresent()) {
-			return result.get();
-		} else {
-			throw new ResourceNotFoundException("item name not found.");
+	@Autowired
+	private ModelMapper modelMapper;
+	 public  Items findByName(String itemName) {
+			
+			Optional<Items> result=itemsRepository.findByItemNames(itemName);
+		Items items=null;
+			if(result.isPresent())
+			{
+			items=result.get();
+			}
+			else
+			{
+				throw new RuntimeException("Did not find product id-"+itemName);
+			}
+			return items;
 		}
-		// return result.isPresent() ? result.get() : throw new
-		// ResourceNotFoundException("item name not found.");
+	@Override
+	public List<ItemDto2> readItems(String itemName) {
+		return itemsRepository.findByItemName(itemName);
+	}
+
+	@Override
+	public Optional<Items> readItems(long itemId) {
+		return itemsRepository.findById(itemId);
+	}
+
+	@Override
+	public List<ItemDto2> getItemsByName(String itemName) {
+		return itemsRepository.findByItemName(itemName);
+	}
+
+	/*
+	 * @Override public void addToItems(ItemDto itemDto, Restaurent restaurent) {
+	 * 
+	 * Items items = new Items(itemDto.getItemName(), itemDto.getPrice(),
+	 * restaurent); itemsRepository.save(items);
+	 * 
+	 * }
+	 */
+	@Override
+	public Items addToItems(ItemDto itemDto, Restaurent restaurent) {
+
+		Items itemRequest = modelMapper.map(itemDto, Items.class);
+		Items items = itemsRepository.save(itemRequest);
+
+		ItemDto itemResponse = modelMapper.map(items, ItemDto.class);
+		Items items1 = new Items(itemResponse, restaurent);
+		return items1;
 
 	}
 
 	@Override
-	public Items findById(long theId) {
-		Optional<Items> result = itemsRepository.findById(theId);
-		Items items = null;
-		if (result.isPresent()) {
-			items = result.get();
-		} else {
-			throw new RuntimeException("Did not find product id-" + theId);
-		}
-		return items;
+	public List<ItemDto2> listItems() {
+		return itemsRepository.findAll().stream().map(post -> modelMapper.map(post, ItemDto2.class))
+				.collect(Collectors.toList());
 	}
 
-	@Override
-	public void addItem(ItemDto itemDto, Restaurent restaurent) {
-		Items items = getItemFromDto(itemDto, restaurent);
-		itemsRepository.save(items);
-
-	}
-
-	public static ItemDto getDtoFromItem(Items items) {
-		ItemDto itemDto = new ItemDto(items);
-		return itemDto;
-	}
-
-	public Items getItemFromDto(ItemDto itemDto, Restaurent restaurent) {
-		Items items = new Items(itemDto, restaurent);
-		return items;
-	}
-
-	@Override
-	public List<ItemDto> listItems() {
-		List<Items> items1 = itemsRepository.findAll();
-		List<ItemDto> itemDtos = new ArrayList<>();
-		/*
-		 * for(Items items : items1) { ItemDto itemDto = getDtoFromItem(items);
-		 * itemDtos.add(itemDto); }
-		 */
-		items1.forEach(item -> itemDtos.add(getDtoFromItem(item)));
-		return itemDtos;
-	}
 }

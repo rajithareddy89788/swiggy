@@ -13,40 +13,39 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mouritech.swiggy_application.dto.ItemDto;
+import com.mouritech.swiggy_application.dto.OfferDto;
 
 @Entity
-@Table(name = "items")
+@Table(name = "offers")
 
-public class Items {
+public class Offers {
 	@JsonIgnore
 	@Id
 
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
-	private String itemName;
-
-	private int price;
+	private int offerValue;
 
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "restaurentId", nullable = false)
 	Restaurent restaurent;
 
-	public Items(ItemDto itemsDto, Restaurent restaurent) {
-		this.itemName = itemsDto.getItemName();
-		this.price = itemsDto.getPrice();
+	public Offers(OfferDto offerDto, Restaurent restaurent) {
+		this.offerValue = offerDto.getOfferValue();
+
 		this.restaurent = restaurent;
 	}
 
-	public Items() {
+	public Offers() {
 
 	}
 
-	public Items(String itemName, int price, Restaurent restaurent2) {
-		this.itemName = itemName;
-		this.price = price;
-		this.restaurent = restaurent2;
+	public Offers(int offerValue, Restaurent restaurent) {
+		super();
+		this.offerValue = offerValue;
+		this.restaurent = restaurent;
 	}
 
 	public long getId() {
@@ -57,28 +56,20 @@ public class Items {
 		this.id = id;
 	}
 
-	public String getItemName() {
-		return itemName;
-	}
-
-	public void setItemName(String itemName) {
-		this.itemName = itemName;
-	}
-
-	public int getPrice() {
-		return price;
-	}
-
-	public void setPrice(int price) {
-		this.price = price;
-	}
-
 	public Restaurent getRestaurent() {
 		return restaurent;
 	}
 
 	public void setRestaurent(Restaurent restaurent) {
 		this.restaurent = restaurent;
+	}
+
+	public int getOfferValue() {
+		return offerValue;
+	}
+
+	public void setOfferValue(int offerValue) {
+		this.offerValue = offerValue;
 	}
 
 }

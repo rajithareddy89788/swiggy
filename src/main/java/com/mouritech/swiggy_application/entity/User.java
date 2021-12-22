@@ -7,14 +7,14 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "swiggyusers", uniqueConstraints = { @UniqueConstraint(columnNames = "username"),
-		@UniqueConstraint(columnNames = "email") })
+		@UniqueConstraint(columnNames = "email"), @UniqueConstraint(columnNames = "mobile") })
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotBlank
-	@Size(max = 20)
+	// @NotBlank
+	// @Size(max = 20)
 	private String username;
 
 	@NotBlank
@@ -22,15 +22,15 @@ public class User {
 	@Email
 	private String email;
 
-	@NotBlank
-	@Size(max = 20)
+	 //@NotBlank
+	// @Size(max = 20)
 	private String password;
-	@NotBlank
-	@Size(max = 20)
+	// @NotBlank
+	// @Size(max = 20)
 	private String name;
 
-	@NotBlank
-	@Size(max = 10)
+	// @NotBlank
+	// @Size(max = 10)
 	private String mobile;
 
 	public User() {
@@ -43,11 +43,12 @@ public class User {
 
 	}
 
-	public User(String username, String email, String password, String name, String mobile) {
+	public User(@NotBlank @Size(max = 20) String username, @NotBlank @Size(max = 50) @Email String email,
+			String password, @NotBlank @Size(max = 20) String name, String mobile) {
+		super();
 		this.username = username;
 		this.email = email;
 		this.password = password;
-
 		this.name = name;
 		this.mobile = mobile;
 	}

@@ -35,14 +35,25 @@ public class Restaurent {
 	@OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
 	@JoinColumn(nullable = false, name = "user_email")
 	private User user;
+	// @JsonIgnore
 	@OneToMany(mappedBy = "restaurent", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	List<Items> items;
+	//@JsonIgnore
+	@OneToMany(mappedBy = "restaurent", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	List<Offers> offers;
 
 	public Restaurent(String restaurentName, String restaurentLocation, User user, List<Items> items) {
 		this.restaurentName = restaurentName;
 		this.restaurentLocation = restaurentLocation;
 		this.user = user;
 		this.items = items;
+	}
+
+	public Restaurent(String restaurentName, String restaurentLocation, List<Offers> offers) {
+		super();
+		this.restaurentName = restaurentName;
+		this.restaurentLocation = restaurentLocation;
+		this.offers = offers;
 	}
 
 	public Restaurent(String restaurentName, String restaurentLocation, User user) {
@@ -93,6 +104,14 @@ public class Restaurent {
 
 	public void setItems(List<Items> items) {
 		this.items = items;
+	}
+
+	public List<Offers> getOffers() {
+		return offers;
+	}
+
+	public void setOffers(List<Offers> offers) {
+		this.offers = offers;
 	}
 
 }
